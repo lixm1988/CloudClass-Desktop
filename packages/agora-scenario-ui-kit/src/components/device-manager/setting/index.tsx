@@ -5,6 +5,7 @@ import { Select } from '~components/select'
 import { Slider } from '~components/slider'
 import './index.css';
 import { t } from '~components/i18n';
+import { CheckBox } from '~ui-kit/components/table';
 interface DeviceProps {
     deviceId: string;
     label: string;
@@ -21,6 +22,7 @@ export interface SettingProps extends BaseProps {
     microphoneVolume?: number; // 麦克风音量
     hasSpeakerVolume?: boolean; // 是否有扬声器音量slider
     speakerVolume?: number; // 扬声器音量
+    isNative?: boolean; // 是否原生
     onChangeDevice?: (deviceType: string, value: string) => void | Promise<void>;
     onChangeAudioVolume?: (deviceType: string, value: number) => void;
     onSelectDevice?: (deviceType: string, value: string) => void | Promise<void>;
@@ -37,6 +39,7 @@ export const Setting: FC<SettingProps> = ({
     microphoneVolume = 50,
     hasSpeakerVolume = true,
     speakerVolume = 50,
+    isNative = true,
     onChangeDevice = (deviceType, value) => {},
     onChangeAudioVolume = (deviceType, value) => {},
     onSelectDevice = (deviceType, value) => {},
@@ -53,7 +56,15 @@ export const Setting: FC<SettingProps> = ({
     return (
         <div className={cls} {...restProps} style={{width: 318}}>
             <div className="device-choose">
-                <div className="device-title">{t('device.camera')}</div>
+                <div 
+                    className="device-title"
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'space-between'
+                    }}
+                >
+                    <div>{t('device.camera')}</div>
+                </div>
                 <Select 
                     value={cameraId}
                     onChange={async value => {

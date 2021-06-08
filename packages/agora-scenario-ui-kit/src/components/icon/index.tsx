@@ -184,9 +184,6 @@ type MediaIconArgs = {
 }
 
 export const getMediaIconProps = (args: MediaIconArgs): MediaIconState => {
-
-  // EduLogger.info("getMediaIconProps, args ", JSON.stringify(args))
-
   const {
     muted,
     deviceState,
@@ -238,7 +235,7 @@ export const getMediaIconProps = (args: MediaIconArgs): MediaIconState => {
         }
       }
     }
-    if (userType === 'teacher') {
+    if (userType === 'teacher' || userType === 'assistant') {
       if (!online || !onPodium || deviceState === 2 || !hasStream) {
         return {
           hover: false,

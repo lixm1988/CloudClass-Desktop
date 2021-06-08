@@ -430,7 +430,27 @@ export class BoardStore extends ZoomController {
         const targetResource = this.allResources.find((item => item.id === resourceUuid))
         if (targetResource) {
           if (targetResource.ext === 'h5') {
-            return this.insertH5(targetResource.url, targetResource.id)
+            this.insertH5(targetResource.url, targetResource.id)
+            if (targetPath === 'screenShare') {
+              eduSDKApi.selectShare(this.appStore.roomInfo.roomUuid, this.appStore.roomInfo.userUuid, {selected: 1})
+              .then(() => {
+                EduLogger.info(`select share, roomUuid: ${this.appStore.roomInfo.roomUuid}, userUuid: ${this.appStore.roomInfo.userUuid}`)
+              })
+              .catch((err) => {
+                const error = GenericErrorWrapper(err)
+                EduLogger.info(`select share, roomUuid: ${this.appStore.roomInfo.roomUuid}, userUuid: ${this.appStore.roomInfo.userUuid}, error: ${error}`)
+              })
+            } else {
+              eduSDKApi.selectShare(this.appStore.roomInfo.roomUuid, this.appStore.roomInfo.userUuid, {selected: 0})
+              .then(() => {
+                EduLogger.info(`select share, roomUuid: ${this.appStore.roomInfo.roomUuid}, userUuid: ${this.appStore.roomInfo.userUuid}`)
+              })
+              .catch((err) => {
+                const error = GenericErrorWrapper(err)
+                EduLogger.info(`select share, roomUuid: ${this.appStore.roomInfo.roomUuid}, userUuid: ${this.appStore.roomInfo.userUuid}, error: ${error}`)
+              })
+            }
+            return
           }
           const scenePath = targetResource!.scenes![currentPage].name
           this.room.setScenePath(`${targetPath}/${scenePath}`)
@@ -1481,7 +1501,7 @@ export class BoardStore extends ZoomController {
       }
       if ([EduRoleTypeEnum.student].includes(userRole)) {
         if (this.hasPermission) {
-          return oneToOneTools.filter((item: ToolItem) => !['cloud', 'tools'].includes(item.value))
+          return oneToOneTools.filter((item: ToolItem) => !['blank-page', 'cloud', 'tools'].includes(item.value))
         } else {
           return []
         }
@@ -1498,7 +1518,7 @@ export class BoardStore extends ZoomController {
       }
       if ([EduRoleTypeEnum.student].includes(userRole)) {
         if (this.hasPermission) {
-          return bigClassTools.filter((item: ToolItem) => !['cloud', 'tools'].includes(item.value))
+          return bigClassTools.filter((item: ToolItem) => !['blank-page', 'cloud', 'tools'].includes(item.value))
         } else {
           return bigClassTools.filter((item: ToolItem) => item.value === 'student_list')
         }
@@ -1836,8 +1856,13 @@ export class BoardStore extends ZoomController {
           }
         }
       })
-      this.room.putScenes(`/${resource.id}`, resource.scenes)
-      this.room.setScenePath(`/${resource.id}/${resource.scenes[0].name}`)
+      const sceneExists = resource.id && this.room.entireScenes()[`/${resource.id}`]
+      if (sceneExists) {
+        this.room.setScenePath(`/${resource.id}/${resource.scenes[0].name}`)
+      } else {
+        this.room.putScenes(`/${resource.id}`, resource.scenes)
+        this.room.setScenePath(`/${resource.id}/${resource.scenes[0].name}`)
+      }
     }
   }
 
@@ -1888,7 +1913,28 @@ export class BoardStore extends ZoomController {
     const room = this.room
     // const iframe = this.iframeList.get(scenePath)
     const iframe = this.iframe
+    if ([EduRoleTypeEnum.assistant, EduRoleTypeEnum.assistant].includes(this.appStore.userRole)) {
+      // TODO: workaround.
+      // Cause probably is readonly state, so the IframeBridge cannot operate.
+      await this.room.setWritable(true)
+    }
     if (!iframe) {
+      const oldIframe = this.room.getInvisiblePlugin('IframeBridge')
+      if (oldIframe) {
+        //@ts-ignore
+        oldIframe?.setAttributes({
+          //@ts-ignore
+          url: url,
+          width: 1280,
+          height: 720,
+          displaySceneDir: `${scenePath}`,
+          useClicker: true
+        })
+        //@ts-ignore
+        this.iframe = oldIframe
+        this.putCourseResource(resourceUuid)
+        return
+      }
       const iframe = await IframeBridge.insert({
         room,
         url: url,
@@ -1907,7 +1953,8 @@ export class BoardStore extends ZoomController {
         displaySceneDir: `${scenePath}`,
         useClicker: true
       })
-      room.setScenePath(scenePath)
+      this.putCourseResource(resourceUuid)
+      // room.setScenePath(scenePath)
     }
     // if (bridge) {
       

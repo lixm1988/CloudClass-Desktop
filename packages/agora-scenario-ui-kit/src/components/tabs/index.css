@@ -707,3 +707,13 @@
     opacity: 1;
   }
 }
+
+.whiteboard .tabs-top {
+  width: 100%;
+}
+.whiteboard .tabs-top .tabs-nav-list {
+  overflow-x: auto;
+}
+.whiteboard .tabs-top .tabs-nav-operations{
+  display: none !important;
+}

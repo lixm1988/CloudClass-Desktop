@@ -443,7 +443,7 @@ export class SceneStore extends SimpleInterval {
             }
           }
         })
-      }).catch(err => {
+      }).catch((err: any) => {
         BizLogger.warn('show screen share window with items', err)
         if (err.code === 'ELECTRON_PERMISSION_DENIED') {
           this.appStore.fireToast('toast.failed_to_enable_screen_sharing_permission_denied')
@@ -1085,12 +1085,15 @@ export class SceneStore extends SimpleInterval {
     try {
       this.joiningRTC = false
       try {
-        await this.appStore.pretestStore.closeCamera()
+        // await this.appStore.pretestStore.closeCamera()
+        await this.mediaService.disableLocalVideo()
       } catch (err) {
         BizLogger.warn(`${err}`)
       }
+      this._cameraRenderer = undefined
       try {
-        await this.appStore.pretestStore.closeMicrophone()
+        // await this.appStore.pretestStore.closeMicrophone()
+        await this.mediaService.disableLocalAudio()
       } catch (err) {
         BizLogger.warn(`${err}`)
       }
@@ -1163,7 +1166,7 @@ export class SceneStore extends SimpleInterval {
     // if (this.classState)
     if (this.classState === EduClassroomStateEnum.beforeStart) {
       return {
-        holderState: 'noEnter',
+        holderState: 'loading',
         text: `placeholder.student_noEnter`
       }
     }

@@ -19,6 +19,19 @@
   position: relative;
 }
 
+
+.chat-panel .tab-title .new-message-notice {
+  display: inline-block;
+  border: 1px solid #F04C36;
+  width: 8px;
+  height: 8px;
+  background: #F04C36;
+  border-radius: 50%;
+  position: absolute;
+  right: -4px;
+  top: -5px;
+}
+
 .message-tab .new-message-notice {
   display: inline-block;
   border: 1px solid #F04C36;
@@ -88,13 +101,32 @@
 .chat-history {
   width: 100%;
   padding-bottom: 18px;
-  overflow-y: scroll;
+  overflow-y: auto;
   width: 100%;
   position: absolute;
 }
 
 .chat-history>.chat-message:first-child {
-  margin-top: 32px;
+  margin-top: 20px;
+}
+
+.conversation-header {
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
+.conversation-header>.avatar{
+  background: url('../icon/assets/svg/avatar.svg') no-repeat center / 36px 36px;
+    /* background: gray; */
+    border-radius: 50%;
+    width:36px;
+    height:36px;
+    position: relative;
+}
+.conversation-header>.name{
+  color: #191919;
+  font-size:13px;
+  margin-left: 15px;
 }
 
 .room.chat-history {

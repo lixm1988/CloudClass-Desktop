@@ -80,7 +80,7 @@ export const en = {
   'placeholder': {
     'muted_chat': 'Muted Chat',
     'empty_chat': 'Empty Message',
-    'empty_quiz': 'Empty Quiz',
+    'empty_quiz': 'Empty Question',
     'enable_chat_muted': 'Student Chat Muted',
     'input_message': 'Please Input Message',
   },
@@ -245,7 +245,7 @@ export const en = {
     'user_list': 'User List'
   },
   'message': 'Message',
-  'quiz': 'Quiz',
+  'quiz': 'Question',
   'en': 'English',
   'cloud': {
     'fileName': 'file name',
@@ -277,6 +277,10 @@ export const en = {
     'camera_error': 'Device exception, camera is unplugged or occupied and cannot be used!',
     'microphone_error': 'Device exception, microphone is unplugged or occupied and cannot be used!',
     'mirror': 'mirror',
+    'beauty': 'beauty',
+    'whitening': 'Whitening',
+    'buffing': 'Buffing',
+    'ruddy': 'Ruddy'
   },
   'tool': {
     'board_name': 'Whiteboard',

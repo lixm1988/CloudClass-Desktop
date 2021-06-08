@@ -6,6 +6,7 @@ import { Button } from '~components/button';
 import { ChatMessage } from '../chat-message';
 import { BaseProps } from '../../interface/base-props';
 import classnames from 'classnames';
+import { transI18n } from '~ui-kit/components/i18n';
 
 export interface MessageListProps extends BaseProps {
     /**
@@ -51,9 +52,6 @@ export const MessageList: FC<MessageListProps> = ({
     const handleFocus = () => setFocused(true);
 
     const handleBlur = () => {
-        if (!!chatText) {
-          return;
-        }
         setFocused(false);
     };
 
@@ -107,7 +105,7 @@ export const MessageList: FC<MessageListProps> = ({
         <>
             <div className={cls} ref={chatHistoryRef} onScroll={handleScroll}>
                 {!messages || messages.length === 0 ? (
-                <Placeholder placeholderDesc={t('placeholder.empty_chat')} />
+                <Placeholder placeholderDesc={transI18n('placeholder.empty_chat')} />
                 ) : (
                 messages.map((message) => (
                     <ChatMessage
@@ -118,11 +116,11 @@ export const MessageList: FC<MessageListProps> = ({
                 ))
                 )}
             </div>
-            <div className={`chat-texting ${!!chatText && focused ? 'focus' : ''}`}>
+            <div className={`chat-texting ${!!chatText || focused ? 'focus' : ''}`}>
                 <textarea
                     value={disableChat ? '' : chatText}
                     className="chat-texting-message"
-                    placeholder={disableChat ? t('placeholder.muted_chat') : t('placeholder.input_message')}
+                    placeholder={disableChat ? transI18n('placeholder.muted_chat') : transI18n('placeholder.input_message')}
                     disabled={disableChat}
                     onChange={(e) => onText(e.currentTarget.value)}
                     onFocus={handleFocus}
@@ -134,7 +132,7 @@ export const MessageList: FC<MessageListProps> = ({
                     bottom: 10,
                     right: 10
                 }}>
-                    {t('send')}
+                    {transI18n('send')}
                 </Button>
             </div>
         </>

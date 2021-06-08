@@ -78,14 +78,6 @@ module.exports = {
     rules: [
       {
         test: /\.ts(x)?$/i,
-        include: [
-          path.resolve("src"),
-          path.resolve(__dirname, '../agora-rte-sdk/src'),
-          path.resolve(__dirname, '../agora-edu-core/src'),
-          path.resolve(__dirname, '../agora-scenario-ui-kit/src'),
-          path.resolve(__dirname, '../agora-plugin-gallery/src'),
-          path.resolve(__dirname, '../agora-widget-gallery/src'),
-        ],
         use: [
           {
             loader: "babel-loader",
@@ -99,11 +91,9 @@ module.exports = {
           }, 
           {
             loader: "thread-loader",
-            options: {
-            }
           }
         ],
-        exclude: /node_modules|(\.(stories.ts)x?$)/,
+        // exclude: /node_modules|(\.(stories.ts)x?$)/,
         // exclude: [
         //   // path.resolve('node_modules'),
         //   {
@@ -113,15 +103,6 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: [
-          path.resolve(__dirname, 'src'),
-          path.resolve(__dirname, '../agora-rte-sdk/src'),
-          path.resolve(__dirname, '../agora-edu-core/src'),
-          path.resolve(__dirname, '../agora-scenario-ui-kit/src'),
-          path.resolve(__dirname, '../agora-plugin-gallery/src'),
-          path.resolve(__dirname, '../agora-widget-gallery/src'),
-          path.resolve(__dirname, '../../node_modules/rc-slider'),
-        ],
         use: [
           'style-loader',
           // {
@@ -146,6 +127,9 @@ module.exports = {
               }
             }
           },
+          {
+            loader: "thread-loader",
+          }
           // {
           //   loader: 'thread-loader',
           // }
@@ -257,6 +241,8 @@ module.exports = {
       REACT_APP_YOUR_OWN_OSS_BUCKET_FOLDER: JSON.stringify(config.REACT_APP_YOUR_OWN_OSS_BUCKET_FOLDER),
       REACT_APP_AGORA_RESTFULL_TOKEN: JSON.stringify(config.REACT_APP_AGORA_RESTFULL_TOKEN),
       AGORA_APAAS_BRANCH_PATH: config.hasOwnProperty('AGORA_APAAS_BRANCH_PATH') ? JSON.stringify(`${process.env.AGORA_APAAS_BRANCH_PATH}`) : JSON.stringify(""),
+      REACT_APP_REPORT_URL: config.hasOwnProperty('REACT_APP_REPORT_URL') ? JSON.stringify(`${config.REACT_APP_REPORT_URL}`) : JSON.stringify(""),
+      REACT_APP_REPORT_QOS: config.hasOwnProperty('REACT_APP_REPORT_QOS') ? JSON.stringify(`${config.REACT_APP_REPORT_QOS}`) : JSON.stringify(""),  
     }),
     // new webpack.DefinePlugin({
     //   REACT_APP_AGORA_GTM_ID: JSON.stringify(config.REACT_APP_AGORA_GTM_ID),
