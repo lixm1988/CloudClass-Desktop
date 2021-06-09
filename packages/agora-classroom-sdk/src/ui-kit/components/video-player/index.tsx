@@ -187,7 +187,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
   const { t } = useTranslation();
   const cls = classnames({
     [`video-player`]: 1,
-    [`isMirror`]: !!isMirror,
+    [`mirror`]: !!isMirror,
     [`${className}`]: !!className,
   });
   const micStateCls = classnames({
