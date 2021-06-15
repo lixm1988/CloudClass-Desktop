@@ -4,7 +4,7 @@ import {storage} from '@/infra/utils'
 import { homeApi, LanguageEnum } from "agora-edu-core"
 import { EduRoleTypeEnum, EduSceneType } from "agora-rte-sdk"
 import { observer } from "mobx-react"
-import React, { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { useHistory } from "react-router"
 import { AgoraRegion } from "@/infra/api"
 import AgoraRTC from 'agora-rtc-sdk-ng'
@@ -145,17 +145,17 @@ export const HomePage = observer(() => {
       onChangeLanguage={onChangeLanguage}
       onClick={async () => {
         homeApi.setRegion(region)
-        let {rtmToken, appId} = await homeApi.login(userUuid)
-        console.log('## rtm Token', rtmToken)
+        // let {rtmToken, appId} = await homeApi.login(userUuid)
+        // console.log('## rtm Token', rtmToken)
         homeStore.setLaunchConfig({
           // rtmUid: userUuid,
-          appId: appId,
+          appId: `enter your agora app id`,
           pretest: true,
           courseWareList: courseWareList.slice(0, 1),
           personalCourseWareList: courseWareList.slice(1, courseWareList.length),
           language: language as LanguageEnum,
           userUuid: `${userUuid}`,
-          rtmToken,
+          rtmToken: `enter your agora rtm token`,
           roomUuid: `${roomUuid}`,
           roomType: scenario,
           roomName: `${roomName}`,
